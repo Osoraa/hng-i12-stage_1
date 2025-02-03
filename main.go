@@ -1,6 +1,9 @@
 package main
 
 import (
+	"net/http"
+	"strconv"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -30,4 +33,16 @@ func main() {
 	// Run server
 	router.Use(cors.New(config))
 	router.Run("localhost:8080")
+}
+
+// getNumbercalls the number_api
+func getNumber(c *gin.Context) {
+	
+
+	num := c.DefaultQuery("num", "42")
+	if num, err := strconv.Atoi(num); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{{"number": "alphabet", "error": true}})
+
+	// Return the response
+	c.JSON(200, n)
 }
