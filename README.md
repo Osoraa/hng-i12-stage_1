@@ -51,8 +51,21 @@ go build
 ### /api/clasify-number?number=`num`
 
 - `GET` : Get math properties of _num_ and a fact
+
+  - Returns a `200` response when num is a valid integer with the example JSON below
+
+  ```json
+  {
+    "number": 371,
+    "is_prime": false,
+    "is_perfect": false,
+    "properties": ["armstrong", "odd"],
+    "digit_sum": 11,
+    "fun_fact": "371 is an Armstrong number because 3^3 + 7^3 + 1^3 = 371"
+  }
+  ```
   
-  - Returns a `400` error if num is not a valid integer with the JSON below
+  - Returns a `400` response if num is not a valid integer with the example JSON below
   
   ```json
   {
@@ -66,6 +79,7 @@ go build
 - [x] Support the GET protocol
 - [x] Enable and handle CORS
 - [x] Handle default input
+- [x] Handle locally computable properties
 - [x] Get fun fact from [NumbersAPI](http://numbersapi.com)
 - [x] Organize the code with packages
 - [x] Document README.md
