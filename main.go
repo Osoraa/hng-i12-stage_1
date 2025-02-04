@@ -66,7 +66,7 @@ func getNumber(c *gin.Context) {
 	fact.Sum = getNumSum(number)
 	fact.Prime = isPrime(number)
 	fact.Fact = string(body)
-	// fact. = isPrime(number)
+	fact.Perfect = isPerfect(number)
 
 
 	// Return the response
@@ -100,3 +100,19 @@ func isPrime(num int) bool{
 	return true
 
 }
+
+// Checks if a number is perfect
+func isPerfect(number int) bool {
+	sum := 0
+
+	for i := 1; i < number; i++ {
+		if number%i == 0 {
+			sum += i
+		}
+	}
+
+	return sum == number
+}
+
+//
+// func getProperties()
