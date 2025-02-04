@@ -28,26 +28,32 @@ func main() {
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
 
 	// GET request
-	router.GET("/api/classify-number/:num", getNumber)
+	router.GET("/api/classify-number", getNumber)
 
 	// Run server
 	router.Use(cors.New(config))
-	router.Run("localhost:8080")
+	router.Run(":8081")
 }
 
-// getNumbercalls the number_api
+// getNumber assembles the nomba struct
 func getNumber(c *gin.Context) {
-	
+	var fact nomba
 
-	num := c.Param("num")
-	// num := c.DefaultQuery("num", "42")
+
+	// num := c.Param("num")
+	num := c.DefaultQuery("number", "42")
 	number, err := strconv.Atoi(num)
-	
+
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
 		return
 	}
+	
+	fact.Number = number
 
 	// Return the response
-	c.JSON(200, number)
+	c.IndentedJSON(http.StatusOK, fact)
 }
+
+// 
+// func getProperties(number int) []
