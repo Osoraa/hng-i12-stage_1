@@ -47,9 +47,10 @@ func getNumber(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
 		return
 	}
-	
+
 	fact.Number = number
 	fact.Sum = getNumSum(number)
+	fact.Prime = isPrime(number)
 
 	// Return the response
 	c.IndentedJSON(http.StatusOK, fact)
@@ -58,7 +59,7 @@ func getNumber(c *gin.Context) {
 // Calculates sum of number's digits
 func getNumSum(num int) int {
 	sum := 0
-	
+
 	for num > 9 {
 		sum += num % 10
 		num /= 10
@@ -67,5 +68,17 @@ func getNumSum(num int) int {
 	return sum + num
 }
 
-// 
-// func getProperties(number int) []
+// Checks if a number is prime
+func isPrime(num int) bool {
+	if num < 2 {
+		return false
+	}
+
+	for i := 2; i < num; i++ {
+		if num%i == 0 {
+			return false
+		}
+	}
+
+	return true
+}
