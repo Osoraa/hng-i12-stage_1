@@ -12,6 +12,7 @@ Creates an API which takes a number and returns math properties and a fun fact
 ```bash
 # Clone & install deps
 git clone https://github.com/Osoraa/hng-i12-stage_1.git
+cd hng-i12-stage_1
 go get .
 go build .
 sudo ./hng-i12-stage_1
