@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"math"
 	"net/http"
 	"strconv"
-	"io"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -48,7 +49,7 @@ func getNumber(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
 		return
 	}
-	
+
 	response, err := http.Get(fmt.Sprintf("http://numbersapi.com/%d/math", number))
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
@@ -63,11 +64,16 @@ func getNumber(c *gin.Context) {
 	}
 
 	fact.Number = number
-	fact.Sum = getNumSum(number)
 	fact.Prime = isPrime(number)
-	fact.Fact = string(body)
 	fact.Perfect = isPerfect(number)
+	fact.Sum = getNumSum(number)
+	fact.Fact = string(body)
 
+	parity, armstrong := getProperties(number)
+	fact.Properties = append(fact.Properties, parity)
+	if armstrong {
+		fact.Properties = append(fact.Properties, "armstrong")
+	}
 
 	// Return the response
 	c.IndentedJSON(http.StatusOK, fact)
@@ -86,7 +92,8 @@ func getNumSum(num int) int {
 }
 
 // Checks if a number is prime
-func isPrime(num int) bool{
+func isPrime(num int) bool {
+	//
 	if num < 2 {
 		return false
 	}
@@ -114,5 +121,28 @@ func isPerfect(number int) bool {
 	return sum == number
 }
 
-//
-// func getProperties()
+// Gets number properties
+func getProperties(number int) (string, bool) {
+	// Checks if a number is perfect
+	var parity string
+	armstrong := false
+
+	// Get parity
+	if number%2 == 0 {
+		parity = "even"
+	} else {
+		parity = "odd"
+	}
+
+	// Check if armstrong
+	sum := 0
+	for i := number; i > 0; i /= 10 {
+		sum += int(math.Pow(float64(i%10), 3))
+	}
+
+	if sum == number {
+		armstrong = true
+	}
+
+	return parity, armstrong
+}
