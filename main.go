@@ -39,10 +39,15 @@ func main() {
 func getNumber(c *gin.Context) {
 	
 
-	num := c.DefaultQuery("num", "42")
-	if num, err := strconv.Atoi(num); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{{"number": "alphabet", "error": true}})
+	num := c.Param("num")
+	// num := c.DefaultQuery("num", "42")
+	number, err := strconv.Atoi(num)
+	
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
+		return
+	}
 
 	// Return the response
-	c.JSON(200, n)
+	c.JSON(200, number)
 }
