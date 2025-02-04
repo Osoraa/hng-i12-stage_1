@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"io"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -42,15 +44,30 @@ func getNumber(c *gin.Context) {
 	// num := c.Param("num")
 	num := c.DefaultQuery("number", "42")
 	number, err := strconv.Atoi(num)
-
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
 		return
+	}
+	
+	response, err := http.Get(fmt.Sprintf("http://numbersapi.com/%d/math", number))
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
+		return
+	}
+	defer response.Body.Close()
+
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
+		// return
 	}
 
 	fact.Number = number
 	fact.Sum = getNumSum(number)
 	fact.Prime = isPrime(number)
+	fact.Fact = string(body)
+	// fact. = isPrime(number)
+
 
 	// Return the response
 	c.IndentedJSON(http.StatusOK, fact)
@@ -69,7 +86,7 @@ func getNumSum(num int) int {
 }
 
 // Checks if a number is prime
-func isPrime(num int) bool {
+func isPrime(num int) bool{
 	if num < 2 {
 		return false
 	}
@@ -81,4 +98,5 @@ func isPrime(num int) bool {
 	}
 
 	return true
+
 }
