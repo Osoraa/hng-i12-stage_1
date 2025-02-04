@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// number struct
 type nomba struct {
 	Number     int      `json:"number"`
 	Prime      bool     `json:"is_prime"`
@@ -35,7 +36,7 @@ func main() {
 
 	// Run server
 	router.Use(cors.New(config))
-	router.Run(":8080")
+	router.Run(":80")
 }
 
 // getNumber assembles the nomba struct
@@ -60,7 +61,7 @@ func getNumber(c *gin.Context) {
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
-		// return
+		return
 	}
 
 	fact.Number = number
