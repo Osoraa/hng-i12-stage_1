@@ -35,7 +35,7 @@ func main() {
 
 	// Run server
 	router.Use(cors.New(config))
-	router.Run(":8081")
+	router.Run(":8080")
 }
 
 // getNumber assembles the nomba struct
