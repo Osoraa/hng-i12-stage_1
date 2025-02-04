@@ -13,7 +13,7 @@ import (
 )
 
 // number struct
-type nomba struct {
+type Nomba struct {
 	Number     int      `json:"number"`
 	Prime      bool     `json:"is_prime"`
 	Perfect    bool     `json:"is_perfect"`
@@ -42,7 +42,7 @@ func main() {
 
 // getNumber assembles the nomba struct
 func getNumber(c *gin.Context) {
-	var fact nomba
+	var fact Nomba
 
 	// num := c.Param("num")
 	num := c.DefaultQuery("number", strconv.Itoa(rand.Intn(1000)))
