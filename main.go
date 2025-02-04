@@ -39,7 +39,6 @@ func main() {
 func getNumber(c *gin.Context) {
 	var fact nomba
 
-
 	// num := c.Param("num")
 	num := c.DefaultQuery("number", "42")
 	number, err := strconv.Atoi(num)
@@ -50,9 +49,22 @@ func getNumber(c *gin.Context) {
 	}
 	
 	fact.Number = number
+	fact.Sum = getNumSum(number)
 
 	// Return the response
 	c.IndentedJSON(http.StatusOK, fact)
+}
+
+// Calculates sum of number's digits
+func getNumSum(num int) int {
+	sum := 0
+	
+	for num > 9 {
+		sum += num % 10
+		num /= 10
+	}
+
+	return sum + num
 }
 
 // 
