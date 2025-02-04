@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"math/rand"
 	"net/http"
 	"strconv"
 
@@ -44,23 +45,23 @@ func getNumber(c *gin.Context) {
 	var fact nomba
 
 	// num := c.Param("num")
-	num := c.DefaultQuery("number", "42")
+	num := c.DefaultQuery("number", strconv.Itoa(rand.Intn(1000)))
 	number, err := strconv.Atoi(num)
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": num, "error": "Valid integers only!"})
 		return
 	}
 
 	response, err := http.Get(fmt.Sprintf("http://numbersapi.com/%d/math", number))
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"number": num, "error": "Botched response"})
 		return
 	}
 	defer response.Body.Close()
 
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"number": "alphabet", "error": true})
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"number": num, "error": true})
 		return
 	}
 
