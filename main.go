@@ -114,6 +114,10 @@ func isPrime(num int) bool {
 func isPerfect(number int) bool {
 	sum := 0
 
+	if number == 0 {
+		return false
+	}
+
 	for i := 1; i < number; i++ {
 		if number%i == 0 {
 			sum += i
